@@ -1,14 +1,13 @@
 #include "loop.h"
+#include "event_handler.h"
 
-bool run_loop(Window *app){
+void run_loop(Window *app){
 
     bool isRunning = true;
 
-    
-
     while (isRunning){
 
-        event_handler(app->event);
+        handle_default_buttons(app->event, &isRunning);
 
         SDL_SetRenderDrawColor(app->render, 0, 0, 0, 255);
         SDL_RenderClear(app->render);

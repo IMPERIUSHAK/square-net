@@ -1,3 +1,6 @@
+#ifndef WINDOW_H
+#define WINDOW_H
+
 #include "stdlib.h"
 #include "SDL2/SDL.h"
 #include "stdbool.h"
@@ -18,3 +21,5 @@ typedef struct{
 }Window;
 
 bool CreateWindow(Window *window);
+
+#endif

@@ -1,5 +1,6 @@
 #include "window.h"
 #include "User.h"
+#include "loop.h"
 
 int main(){
 
@@ -14,12 +15,8 @@ int main(){
     SDL_Event event;
     screen.event = &event;
 
-    SDL_SetRenderDrawBlendMode(&screen.render, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawBlendMode(screen.render, SDL_BLENDMODE_BLEND);
 
-    
-    if (!run_loop()){
-        fprintf(stderr, "Error: %s\n", SDL_GetError());
-        return -1;
-    }
+    run_loop(&screen);
     
 }
