@@ -1,27 +1,21 @@
-#include "stdio.h"
-#include "unistd.h"
+#include "protocol.h"
 #include "arpa/inet.h"
 #include "netinet/in.h"
 #include "sys/types.h"
 #include "sys/socket.h"
-#include "string.h"
 #include "stdbool.h"
-
-#define MAXLINE 1000
-typedef struct{
-
-    int x;
-    int y;
-
-}User;
+#include "string.h"
+#include "unistd.h"
+#define MAXBUFF 1000
 
 int main(void){
 
     int listenfd, connfd;
+    
     socklen_t len;
     struct sockaddr_in servaddr, cliaddr;
-    
-    char buff[MAXLINE];
+
+    char buff[MAXBUFF];
 
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
     if (listenfd == -1){
@@ -34,27 +28,30 @@ int main(void){
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
     servaddr.sin_port = htons(720);
 
-    if (bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr)) == -1){
-        fprintf(stderr, "Error with bind socket");
+    if (bind(listenfd,  (struct sockaddr *)&servaddr, sizeof(servaddr)) == -1){
+        fprintf(stderr, "Error while binding socket");
         return -1;
     }
 
-    if (listen(listenfd, 10) == -1){
-        fprintf(stderr, "listen");
+    if (listen(listenfd, 3) == -1){
+        fprintf(stderr, "Error while trying to LISTEN socket");
         return -1;
     }
-
+    UserData user;
+    
     while (true){
         len = sizeof(cliaddr);
-        connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &len);
-
+        connfd = accept(listenfd,  (struct sockaddr *)&cliaddr, &len);
+        if (connfd == -1){
+            fprintf(stderr, "ACK Error");
+            continue;
+        }
         printf("connection from %s, port %d\n", inet_ntop(AF_INET, &cliaddr.sin_addr.s_addr, buff, sizeof(buff)), ntohs(cliaddr.sin_port));
-        User user = {.x = 15, .y = 13};
 
-        if (send(connfd, &user, sizeof(user), 0)){
-            printf("send is succes");
+        if (recv(connfd, &user, sizeof(user), 0) > 0){
+            printf("Server got data Succesfully: UserData->x = %d, UserData->y = %d\n", user.x, user.y);
         }
 
-        //close(connfd);
+        close(connfd);
     }
 }
