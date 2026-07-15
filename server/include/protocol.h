@@ -8,6 +8,8 @@ typedef struct {
 
     int x;
     int y;
+    char ip[16];
+    int port;
 
 }UserData;
 
