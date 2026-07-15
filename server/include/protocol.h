@@ -13,4 +13,8 @@ typedef struct {
 
 }UserData;
 
+int checkUser(UserData **users, UserData *user);
+void updateUser(UserData **users, UserData *user, int *userCount);
+void addUser(UserData **users, UserData *user, int *userCount);
+
 #endif

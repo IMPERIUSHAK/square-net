@@ -9,6 +9,7 @@
 #define DEFAULT_SCREEN_HEIGHT 480
 #define DEFAULT_SCREEN_TITLE "FREDY"
 
+
 typedef struct{
 
     int WINDOW_HEIGHT;

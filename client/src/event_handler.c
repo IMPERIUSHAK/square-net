@@ -25,17 +25,25 @@ void handle_user_events(User *user, SDL_Event *event){
 }
 
 
-void handle_events(Window *app, User *user, bool *isRunning){
-    
-    while (SDL_PollEvent(app->event)) {
-    
-        if (app->event->type == SDL_QUIT || app->event->key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
-            *isRunning = false;
-        }
-    
-        if (app->event->type == SDL_KEYDOWN) {
-    
-            handle_user_events(user, app->event);
+void* handle_events(void *arg) {
+    EventThreadArgs *args = (EventThreadArgs *)arg;
+    Window *app = args->screen;
+    User *user = args->user;
+    bool *isRunning = args->isRunning;
+
+    while (*isRunning) {
+        while (SDL_PollEvent(app->event)) {
+            if (app->event->type == SDL_QUIT ||
+                app->event->key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
+                
+                pthread_mutex_lock(args->isRunningMutex);
+                *isRunning = false;
+                pthread_mutex_unlock(args->isRunningMutex);
+            }
+            if (app->event->type == SDL_KEYDOWN) {
+                handle_user_events(user, app->event);
+            }
         }
     }
+    return NULL;
 }
