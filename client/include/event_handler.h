@@ -10,6 +10,7 @@ typedef struct {
     User *user;
     bool *isRunning;
     pthread_mutex_t *isRunningMutex;
+    pthread_mutex_t *userMutex;
 } EventThreadArgs;
 
 

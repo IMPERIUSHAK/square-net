@@ -34,14 +34,16 @@ void* handle_events(void *arg) {
     while (*isRunning) {
         while (SDL_PollEvent(app->event)) {
             if (app->event->type == SDL_QUIT ||
-                app->event->key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
+                    app->event->key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
                 
                 pthread_mutex_lock(args->isRunningMutex);
                 *isRunning = false;
                 pthread_mutex_unlock(args->isRunningMutex);
             }
             if (app->event->type == SDL_KEYDOWN) {
+                pthread_mutex_lock(args->userMutex);
                 handle_user_events(user, app->event);
+                pthread_mutex_unlock(args->userMutex);
             }
         }
     }

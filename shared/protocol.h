@@ -10,7 +10,7 @@ typedef struct {
     int y;
     char ip[16];
     int port;
-
+    int connfd;
 }UserData;
 
 int checkUser(UserData **users, UserData *user);

@@ -1,7 +1,7 @@
 CC = gcc
-CFLAGS = -Wall -g -Iinclude $(shell sdl2-config --cflags)
+CFLAGS = -Wall -g -Iinclude $(shell sdl2-config --cflags) -I../shared
 LDFLAGS = $(shell sdl2-config --libs) -lSDL2_ttf
-SRCS = src/main.c src/window.c src/loop.c src/event_handler.c src/user.c
+SRCS = src/main.c src/window.c src/loop.c src/event_handler.c src/user.c src/net_client.c
 TARGET = main
 
 all:

@@ -58,7 +58,7 @@ int main(void){
              
                 updateUser(&users, &user, &conn);
             }
-
+            close(connfd); 
         }else if (userCount < MAXUSERS){
     
             printf("hello %d\n", userCount);
@@ -67,8 +67,7 @@ int main(void){
         }else{
         
             printf("Reached the limit of users\n"); 
-            close(connfd);
-        
+            close(connfd); 
         }
 
         printf("==============================USERS==========================\n");
@@ -77,6 +76,7 @@ int main(void){
         }
         printf("=============================================================\n\n");
         
-        close(connfd);
     }
+    close(connfd);
+    free(users);
 }
