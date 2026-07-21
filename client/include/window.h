@@ -4,11 +4,12 @@
 #include "stdlib.h"
 #include "SDL2/SDL.h"
 #include "stdbool.h"
+#include "protocol.h"
 
 #define DEFAULT_SCREEN_WIDTH 640
 #define DEFAULT_SCREEN_HEIGHT 480
 #define DEFAULT_SCREEN_TITLE "FREDY"
-
+#define MAXUSERS 3
 
 typedef struct{
 

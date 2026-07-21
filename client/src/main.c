@@ -2,6 +2,7 @@
 #include "user.h"
 #include "loop.h"
 #include "pthread.h"
+#include "remote_user.h"
 #include "net_client.h"
 int main(){
 
@@ -31,22 +32,27 @@ int main(){
     pthread_mutex_init(&isRunningMutex, NULL);
     pthread_mutex_init(&userMutex, NULL);
     
+    RemoteUsers remote = {0};
+    pthread_mutex_init(&remote.mutex, NULL);
+
+
     EventThreadArgs args = {.isRunning = &isRunning, .screen = &screen, .user = &user, .isRunningMutex = &isRunningMutex, .userMutex = &userMutex};
     
     NetClient clientargs = {0};
     
-    ConnectionThreadArgs conthargs= {.isRunning = &isRunning, .netclient = &clientargs, .isRunningMutex = &isRunningMutex, .user = &user, .userMutex = &userMutex};
+    ConnectionThreadArgs conthargs= {.isRunning = &isRunning, .netclient = &clientargs, .isRunningMutex = &isRunningMutex, .user = &user, .userMutex = &userMutex, .remote = &remote};
 
     pthread_create(&keyhandler_thread, NULL, handle_events, &args);
     pthread_create(&server_thread, NULL, handle_connection, &conthargs);
     
-    run_loop(&screen, &user, &isRunning, &isRunningMutex);
+    run_loop(&screen, &user, &isRunning, &isRunningMutex, &remote);
     
     pthread_join(keyhandler_thread, NULL);
     pthread_join(server_thread, NULL);
 
     pthread_mutex_destroy(&isRunningMutex);
     pthread_mutex_destroy(&userMutex);
+
     SDL_DestroyTexture(user.texture);
     SDL_DestroyRenderer(screen.render);
 }

@@ -70,11 +70,11 @@ int main(void){
             close(connfd); 
         }
 
-        printf("==============================USERS==========================\n");
-        for (int i = 0; i < userCount; i++){
-            printf("||User ip: %s   User port: %d                    ||\n", users[i].ip, users[i].port);
-        }
-        printf("=============================================================\n\n");
+        // printf("==============================USERS==========================\n");
+        // for (int i = 0; i < userCount; i++){
+        //     printf("||User ip: %s   User port: %d                    ||\n", users[i].ip, users[i].port);
+        // }
+        // printf("=============================================================\n\n");
         
     }
     close(connfd);

@@ -10,6 +10,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <pthread.h>
+#include "remote_user.h"
 
 #define SERVER_IP   "127.0.0.1"
 #define SERVER_PORT 720
@@ -26,9 +27,16 @@ typedef struct {
     pthread_mutex_t *isRunningMutex;
     User *user;
     pthread_mutex_t *userMutex;
-}ConnectionThreadArgs;
+    RemoteUsers *remote;
+} ConnectionThreadArgs;
+
+typedef struct {
+    NetClient *netclient;
+    RemoteUsers *remote;
+} RecvThreadArgs;         
 
 void* handle_connection(void* arg);
+void* handle_recv(void* arg);
 bool net_client_connect(NetClient *client);
 
 #endif
